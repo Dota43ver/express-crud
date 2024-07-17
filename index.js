@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import AppDataSource from "./src/database/data-source.js";
-import { User } from "./src/entity/user.entity.js";
+import { User } from "./src/models/user.entity.js";
+import "dotenv/config";
 
 const app = express();
 const port = process.env.PORT || 3000;
