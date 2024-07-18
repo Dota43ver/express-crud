@@ -85,3 +85,44 @@ exports.me = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+exports.update = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { id } = req.params;
+  const { name, email, username } = req.body;
+  try {
+    const user = await getUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (name) {
+      user.name = name;
+    }
+    if (email) {
+      user.email = email;
+    }
+    if (username) {
+      user.username = username;
+    }
+    await user.save();
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+exports.delete = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await getUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    await user.remove();
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
