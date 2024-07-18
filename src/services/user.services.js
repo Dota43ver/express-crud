@@ -58,3 +58,30 @@ exports.login = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
+exports.logout = async (req, res) => {
+  const { token } = req.cookies;
+  try {
+    const user = await getUserById(token);
+    if (!user) {
+      return res.status(401).json({ error: "Invalid Credentials" });
+    }
+    res.clearCookie("token");
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+exports.me = async (req, res) => {
+  const { token } = req.cookies;
+  try {
+    const user = await getUserById(token);
+    if (!user) {
+      return res.status(401).json({ error: "Invalid Credentials" });
+    }
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
