@@ -25,14 +25,3 @@ const login = async (req, res) => {
 export const UserController = {
   register,
 };
-
-const logout = async (req, res) => {
-  try {
-    console.log(re.body);
-    const { username, password } = req.body;
-    return res.json({ ok: true, msg: "Logged out" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Error server" });
-  }
-};
